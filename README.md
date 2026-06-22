@@ -2,7 +2,9 @@
 
 > _Implementation-ready guidance for designing, reviewing, and testing how a terminal program talks to people and to scripts._
 
-Part of **[Agent Kaizen](https://github.com/DirectorGunner/agent-kaizen)** — continuously improving how AI agents reason, act, verify, and operate inside project environments. This repository is the `cli-design` skill: a reusable, trigger-rich task handbook that an AI coding agent (OpenAI Codex, Claude Code) loads on demand when a task matches its triggers.
+Part of **[Agent Kaizen](https://github.com/DirectorGunner/agent-kaizen)** — Agent Kaizen is designed to support reliable AI agent workflows, context engineering, and AI systems engineering in VS Code, Codex, and Claude Code. Build reusable agent skills, reduce unnecessary context loading, add validation loops, and apply Spec → Verifier → Environment scaffolding to new and existing projects.
+
+This repository is the `cli-design` skill: a reusable, trigger-rich task handbook that an AI coding agent (OpenAI Codex, Claude Code) loads on demand when a task matches its triggers.
 
 ## What this skill covers
 

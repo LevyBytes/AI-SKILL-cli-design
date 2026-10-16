@@ -4,215 +4,88 @@
     {
       "topic": "Arguments and Flags",
       "file": "references/arguments-and-flags.md",
-      "summary": "Positional arguments vs named flags, POSIX-style syntax baseline, defaults, and keeping secrets off the command line.",
-      "keywords": [
-        "arguments",
-        "flags",
-        "options",
-        "positional",
-        "getopt",
-        "posix",
-        "defaults",
-        "secrets"
-      ]
-    },
+      "summary": "Open when designing or reviewing CLI operands, flag names, defaults, required options, or safe secret input.",
+      "keywords": ["arguments", "flags", "options", "positional", "defaults", "secrets"]},
+    {
+      "topic": "Option Parsing and Platforms",
+      "file": "references/option-parsing-and-platforms.md",
+      "summary": "Open when implementing option parsing, optional values, repeated flags, globbing, or Unix and Windows/PowerShell parsing differences.",
+      "keywords": ["getopt", "posix", "option parsing", "optional values", "--", "globbing", "powershell"]},
     {
       "topic": "Subcommands and Command Shape",
       "file": "references/subcommands-and-command-shape.md",
-      "summary": "Grouping commands into areas, consistent naming, and word order (noun-verb default vs verb-noun).",
-      "keywords": [
-        "subcommands",
-        "command shape",
-        "noun-verb",
-        "verb-noun",
-        "areas",
-        "naming",
-        "aliases"
-      ]
-    },
+      "summary": "Open when organizing CLI subcommands, choosing command names or word order, or reviewing command consistency.",
+      "keywords": ["subcommands", "command shape", "noun-verb", "verb-noun", "areas", "naming", "aliases"]},
     {
       "topic": "Prompts and Confirmation",
       "file": "references/prompts-and-confirmation.md",
-      "summary": "Interactive prompts with non-interactive escape hatches and confirmation strength scaled to danger.",
-      "keywords": [
-        "prompts",
-        "confirmation",
-        "interactive",
-        "--no-input",
-        "--yes",
-        "destructive",
-        "passwords"
-      ]
-    },
+      "summary": "Open when adding interactive prompts, confirmation for destructive actions, or ways to run without prompting.",
+      "keywords": ["prompts", "confirmation", "interactive", "--no-input", "--yes", "destructive", "passwords"]},
     {
       "topic": "Help and Usage Text",
       "file": "references/help-and-usage.md",
-      "summary": "Designing -h/--help, usage synopsis, examples-first help, man pages, completion UX, and did-you-mean suggestions.",
-      "keywords": [
-        "help",
-        "usage",
-        "synopsis",
-        "--help",
-        "-h",
-        "man page",
-        "examples",
-        "completion",
-        "did you mean"
-      ]
-    },
+      "summary": "Open when writing CLI help, usage syntax, or examples, or deciding help output streams and exit status.",
+      "keywords": ["help", "usage", "synopsis", "--help", "-h", "examples"]},
+    {
+      "topic": "Discovery, Completion, and CLI Documentation",
+      "file": "references/discovery-completion-and-docs.md",
+      "summary": "Open when designing command discovery, typo suggestions, shell completion, man pages, or links to CLI documentation.",
+      "keywords": ["man page", "completion", "did you mean", "suggestions", "documentation"]},
     {
       "topic": "Output and Formatting",
       "file": "references/output-and-formatting.md",
-      "summary": "What/where to print, --json and grep-parseable tables, paging, verbosity, and context-dependent success output.",
-      "keywords": [
-        "output",
-        "stdout",
-        "json",
-        "--plain",
-        "tables",
-        "verbosity",
-        "paging",
-        "success output"
-      ]
-    },
+      "summary": "Open when choosing CLI output formats, JSON or plain-text modes, tables, paging, verbosity, or success messages.",
+      "keywords": ["output", "stdout", "json", "--plain", "tables", "verbosity", "paging", "success output"]},
     {
       "topic": "Color and Styling",
       "file": "references/color-and-styling.md",
-      "summary": "ANSI color as a redundant enhancement; NO_COLOR/TTY disable rules; theme-safe palettes; Windows VT.",
-      "keywords": [
-        "color",
-        "ansi",
-        "no_color",
-        "styling",
-        "tty",
-        "windows vt",
-        "palette"
-      ]
-    },
+      "summary": "Open when adding CLI color or styling, honoring NO_COLOR and TTY detection, or supporting terminal themes and Windows VT.",
+      "keywords": ["color", "ansi", "no_color", "styling", "tty", "windows vt", "palette"]},
     {
       "topic": "Errors and Exit Codes",
       "file": "references/errors-and-exit-codes.md",
-      "summary": "Actionable error messages and a layered exit-code model (binary baseline, small set, reserved codes, optional richer codes).",
-      "keywords": [
-        "errors",
-        "exit codes",
-        "sysexits",
-        "126",
-        "127",
-        "128",
-        "stderr",
-        "messages"
-      ]
-    },
+      "summary": "Open when writing actionable CLI errors, assigning exit codes, or handling reserved and platform-specific exit statuses.",
+      "keywords": ["errors", "exit codes", "sysexits", "126", "127", "128", "stderr", "messages"]},
     {
       "topic": "Streams and Piping",
+      "translations": {"es": "references/es/streams-and-piping.md"},
       "file": "references/streams-and-piping.md",
-      "summary": "stdout for data, stderr for messages, '-' for streams, and pipe-friendly behavior across shells.",
-      "keywords": [
-        "stdout",
-        "stderr",
-        "pipe",
-        "streams",
-        "stdin",
-        "composability",
-        "sigpipe"
-      ]
-    },
+      "summary": "Open when separating stdout and stderr, accepting stdin, using '-' for streams, or handling pipelines and broken pipes.",
+      "keywords": ["stdout", "stderr", "pipe", "streams", "stdin", "composability", "sigpipe"]},
     {
       "topic": "Progress and Feedback",
       "file": "references/progress-and-feedback.md",
-      "summary": "Responsiveness, spinners and progress bars, TTY-only animation, and surfacing logs on failure.",
-      "keywords": [
-        "progress",
-        "spinner",
-        "progress bar",
-        "responsiveness",
-        "feedback",
-        "timeouts"
-      ]
-    },
+      "summary": "Open when adding progress bars, spinners, status feedback, or failure logs for long-running CLI operations.",
+      "keywords": ["progress", "spinner", "progress bar", "responsiveness", "feedback", "timeouts"]},
     {
       "topic": "Interactivity, TTY, and CI",
       "file": "references/interactivity-tty-and-ci.md",
-      "summary": "TTY detection, --no-input, signal handling, and safe unattended/CI behavior from one command.",
-      "keywords": [
-        "tty",
-        "ci",
-        "non-interactive",
-        "--no-input",
-        "signals",
-        "ctrl-c",
-        "unattended"
-      ]
-    },
+      "summary": "Open when adapting a CLI to terminals, redirected streams, unattended runs, or CI, including TTY detection, --no-input, and signals.",
+      "keywords": ["tty", "ci", "non-interactive", "--no-input", "signals", "ctrl-c", "unattended"]},
     {
       "topic": "Configuration, Environment, and Precedence",
       "file": "references/config-env-and-precedence.md",
-      "summary": "Flags vs env vars vs config files, precedence order, XDG/%APPDATA% locations, and no secrets in env.",
-      "keywords": [
-        "config",
-        "environment variables",
-        "precedence",
-        "xdg",
-        "appdata",
-        ".env",
-        "secrets"
-      ]
-    },
+      "summary": "Open when choosing CLI configuration sources, resolving flag/environment/file precedence, locating config files, or protecting secrets.",
+      "keywords": ["config", "environment variables", "precedence", "xdg", "appdata", ".env", "secrets"]},
     {
       "topic": "Accessibility and Internationalization",
       "file": "references/accessibility-and-i18n.md",
-      "summary": "Meaning without color, screen-reader-safe plain output, keyboard/non-interactive safety, and locale/width care.",
-      "keywords": [
-        "accessibility",
-        "i18n",
-        "screen reader",
-        "colorblind",
-        "no_color",
-        "locale",
-        "plain"
-      ]
-    },
+      "summary": "Open when making CLI output accessible to screen readers, usable without color, or safe across locales and display widths.",
+      "keywords": ["accessibility", "i18n", "screen reader", "colorblind", "no_color", "locale", "plain"]},
     {
       "topic": "Testing CLI UX",
       "file": "references/testing-cli-ux.md",
-      "summary": "Verifying exit code, stdout, stderr, TTY vs non-TTY paths, and --json snapshots as ground truth.",
-      "keywords": [
-        "testing",
-        "ci",
-        "exit code",
-        "snapshot",
-        "stdout",
-        "stderr",
-        "lastexitcode"
-      ]
-    },
-    {
-      "topic": "Skill Format and Discovery",
-      "file": "references/skill-format-and-discovery.md",
-      "summary": "The Agent Skills format, Codex/Claude discovery locations, and the trigger-rich description.",
-      "keywords": [
-        "skill",
-        "skill.md",
-        "agent skills",
-        "discovery",
-        "frontmatter",
-        "codex",
-        "claude"
-      ]
-    },
+      "summary": "Open when testing CLI exit codes, stdout, stderr, JSON output, or behavior in terminals, pipelines, and CI.",
+      "keywords": ["testing", "ci", "exit code", "snapshot", "stdout", "stderr", "lastexitcode"]},
     {
       "topic": "CLI Design Review Checklist",
       "file": "references/cli-design-review.md",
-      "summary": "A binary, severity-labeled audit checklist for an existing CLI, framed by the three-layer method.",
-      "keywords": [
-        "review",
-        "checklist",
-        "audit",
-        "severity",
-        "verification",
-        "three-layer"
-      ]
-    }
+      "summary": "Open when reviewing an existing CLI against a design checklist and reporting findings by severity.",
+      "keywords": ["review", "checklist", "audit", "severity", "verification"]},
+    {
+      "topic": "Reference Language Selection",
+      "file": "references/languages.md",
+      "summary": "Open when you need a language version of this skill's references other than English.",
+      "keywords": ["reference language", "translated references", "language selection"]}
   ]
 }

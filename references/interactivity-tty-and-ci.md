@@ -9,37 +9,36 @@ Ctrl-C and signals, or making a tool safe to run unattended.
 
 ## Principles
 
-- **Detect the TTY and adapt.** stdin-TTY decides whether to prompt; stdout-TTY decides
- whether to color/animate. Pipes and CI are non-TTY — the same checks cover both. See
- `streams-and-piping.md`, `color-and-styling.md`, `progress-and-feedback.md`.
+- **Detect each stream and adapt.** Check stdin before prompting, stdout before styling data and stderr before styling progress. Require explicit non-interactive/CI policy too: a pseudo-terminal is not proof of a person. See
+ [streams-and-piping.md](streams-and-piping.md), [color-and-styling.md](color-and-styling.md), [progress-and-feedback.md](progress-and-feedback.md).
 - **Always offer an explicit non-interactive mode** so behavior is predictable in automation.
 
 ## Decision rules
 
 ### Interactive vs non-interactive
 ```
-# Human (stdin is a TTY): may prompt, color, animate
+# Human: check input and each output destination independently
 $ tool deploy
-# CI / piped (non-TTY): no prompts, no color, no spinner; needs flags
-$ echo "" | tool deploy --no-input --yes
+# Unattended: flags provide values and documented confirmations
+$ tool deploy --no-input --yes
 ```
 - If interactive input is needed but unavailable (non-TTY and no flag), **fail fast** with a message
- naming the flag — don't hang. See `prompts-and-confirmation.md`.
+ naming the flag — don't hang. See [prompts-and-confirmation.md](prompts-and-confirmation.md).
 - If the tool reads piped stdin but stdin is a TTY (nothing piped), show help or exit rather than
- blocking. See `help-and-usage.md`.
+ blocking. See [help-and-usage.md](help-and-usage.md).
 
 ### Signals and escape
 - **Ctrl-C (SIGINT) must work**, even during network I/O; say something, then exit
  promptly. Add timeouts to cleanup so it can't hang; a second Ctrl-C during cleanup should skip the
  long cleanup and tell the user what happens next time.
-- Expect unclean exits: design so a resumed run tolerates incomplete prior cleanup (crash-only). See `progress-and-feedback.md`.
+- Expect unclean exits: design so a resumed run tolerates incomplete prior cleanup (crash-only). See [progress-and-feedback.md](progress-and-feedback.md).
 - For wrappers (ssh/tmux-like), document the escape sequence.
 
 ### Unattended safety
 - Defaults must be safe for automation: no surprise prompts, no animations, deterministic output,
- non-zero exit on failure (see `errors-and-exit-codes.md`).
+ non-zero exit on failure (see [errors-and-exit-codes.md](errors-and-exit-codes.md)).
 - Honor proxy/`NO_COLOR`/`CI` and similar environment signals. See
- `config-env-and-precedence.md`.
+ [config-env-and-precedence.md](config-env-and-precedence.md).
 
 ## Windows / PowerShell callouts
 
@@ -47,15 +46,13 @@ $ echo "" | tool deploy --no-input --yes
  `--verbosity Quiet` and interactive could collide, either still prompt under `--interactive` or
  forbid the pairing, so the tool never silently waits.
 - TTY/console detection and Ctrl-C handling differ on Windows (no SIGINT in the Unix
- sense; the console sends CTRL_C_EVENT). Detect "is a console attached" via the platform API and
- still exit non-zero on interruption. Detect CI the same way (env vars / non-TTY) on both OSes.
+ sense; the console sends CTRL_C_EVENT). Check redirection/capabilities for each standard handle, not just whether a console is attached, and still exit non-zero on interruption. Detect CI the same way (env vars / non-TTY) on both OSes.
 
 ## Edge cases / anti-patterns
 
 - **Don't** assume interactive — the most common automation bug is a prompt that hangs CI.
 - **Don't** ignore Ctrl-C during long network calls.
-- Auto-detecting "am I in CI?" via env vars is a useful *hint*, but the TTY check is the reliable
- signal; combine them.
+- Auto-detecting "am I in CI?" via env vars is a useful *hint*, but TTY status reports the stream type, not whether a person is present; explicit non-interactive policy must still win.
 
 ## Do / Don't
 
@@ -66,5 +63,5 @@ $ echo "" | tool deploy --no-input --yes
 
 ## Related
 
-`prompts-and-confirmation.md` · `streams-and-piping.md` · `progress-and-feedback.md` ·
-`color-and-styling.md` · `config-env-and-precedence.md` · `errors-and-exit-codes.md`
+[prompts-and-confirmation.md](prompts-and-confirmation.md) · [streams-and-piping.md](streams-and-piping.md) · [progress-and-feedback.md](progress-and-feedback.md) ·
+[color-and-styling.md](color-and-styling.md) · [config-env-and-precedence.md](config-env-and-precedence.md) · [errors-and-exit-codes.md](errors-and-exit-codes.md)

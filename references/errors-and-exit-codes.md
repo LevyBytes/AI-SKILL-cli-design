@@ -24,8 +24,8 @@ Try: chmod +w config.toml
  with context); don't dump a raw stack trace by default — gate it behind `--verbose`.
 
 ### Where errors go
-- Error/warning text → **stderr**; exit non-zero. See `streams-and-piping.md`.
-- A usage error may print short help to stderr (see `help-and-usage.md`).
+- Error/warning text → **stderr**. Failure exits non-zero; a warning during a successful operation need not. See [streams-and-piping.md](streams-and-piping.md).
+- A usage error may print short help to stderr (see [help-and-usage.md](help-and-usage.md)).
 
 ## Exit codes — layered, all-encompassing model
 
@@ -48,10 +48,16 @@ set you choose**.
  `70` software, `73` can't create, `77` no permission, `78` config). Use it only if callers need to
  distinguish causes — and keep codes stable forever once published.
 
+```sh
+if tool deploy; then
+    printf '%s\n' OK
+else
+    rc=$?
+    printf 'failed (%s)\n' "$rc" >&2
+    exit "$rc"
+fi
 ```
-$ tool deploy && echo OK || echo "failed ($?)"
-# exit 0 -> OK ; exit 2 -> usage ; exit 1 -> runtime failure
-```
+This shell wrapper preserves the failing command's status instead of returning the status of a final message.
 
 ### Decision rules
 - Before adding granularity, ask: is the failure recoverable on retry? are there partial successes?
@@ -85,5 +91,7 @@ $ tool deploy && echo OK || echo "failed ($?)"
 
 ## Related
 
-`output-and-formatting.md` · `streams-and-piping.md` · `arguments-and-flags.md` ·
-`interactivity-tty-and-ci.md` · `testing-cli-ux.md`
+[output-and-formatting.md](output-and-formatting.md) · [streams-and-piping.md](streams-and-piping.md) · [arguments-and-flags.md](arguments-and-flags.md) ·
+[interactivity-tty-and-ci.md](interactivity-tty-and-ci.md) · [testing-cli-ux.md](testing-cli-ux.md)
+
+Sources: [Bash exit status](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html).

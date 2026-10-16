@@ -18,7 +18,7 @@ naming, word order, aliases, or whether to add subcommands at all.
 
 ### Word order — recommended default: noun-verb / area-grouping
 - **Recommended:** group by the object (noun/area), then the action (verb):
- `tool <area> <verb>` e.g. `docker container create`, `git remote add`, `dotnet tool install`. This organizes help, scales as the tool grows, and matches most large multi-command CLIs.
+ `tool <area> <verb>` e.g. `docker container create`, `git remote add`, `dotnet tool install`. This organizes help, scales as the tool grows, and is illustrated by these established multi-command CLIs; it is a design recommendation, not a universal standard.
 - **Alternative — verb-noun:** `tool create project` reads like natural
  task phrasing and is used by some tools. If you choose it, apply it everywhere.
 - **Rule:** pick one order and never mix. Mixed order is the most common consistency bug.
@@ -38,10 +38,9 @@ $ tool db backup myapp
 
 ### Naming
 - Lowercase, single words; kebab-case only when a multi-word name is unavoidable
- (`pg:credentials:repair-default`). Colons are one valid nesting separator;
+ (`repair-default`). A tool may instead define colon-separated command names such as `pg:credentials:repair-default`;
  spaces (`git remote add`) are the more common one.
-- The root of an area should list its members, e.g. `tool config` lists config vars — **don't** add a
- redundant `*:list` command.
+- Make a grouping-only root show its commands. If it instead defaults to a read-only list, document that behavior; an explicit `tool config list` remains useful for scripts and is not inherently redundant.
 - Avoid near-synonym commands ("update" vs "upgrade"); disambiguate or pick one.
 
 ## Windows / PowerShell callouts
@@ -62,11 +61,11 @@ $ tool db backup myapp
 ## Do / Don't
 
 - **Do** keep flag names and output identical across subcommands.
-- **Do** organize help by area and frequency (see `help-and-usage.md`).
+- **Do** organize help by area and frequency (see [help-and-usage.md](help-and-usage.md)).
 - **Don't** mix verb-noun and noun-verb in the same tool.
-- **Don't** create `*:list`/`*:show` when the area root can list.
+- **Do** distinguish listing available subcommands from listing domain resources; make each default explicit.
 
 ## Related
 
-`arguments-and-flags.md` · `help-and-usage.md` · `output-and-formatting.md` ·
-`config-env-and-precedence.md`
+[arguments-and-flags.md](arguments-and-flags.md) · [help-and-usage.md](help-and-usage.md) · [output-and-formatting.md](output-and-formatting.md) ·
+[config-env-and-precedence.md](config-env-and-precedence.md)

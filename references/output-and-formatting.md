@@ -9,9 +9,9 @@ success output is **context-dependent**: a brief confirmation on a TTY, quiet/da
 
 ## Principles
 
-- **Human-readable first; detect the TTY** to decide whether a human is reading. Assume any program's output may become another program's input.
+- **Human-readable first; detect each output stream's TTY status** as a formatting hint, not proof a human is present. Assume any program's output may become another program's input.
 - **Primary data → stdout; messaging → stderr**. See
- `streams-and-piping.md`.
+ [streams-and-piping.md](streams-and-piping.md).
 
 ## Decision rules
 
@@ -32,8 +32,7 @@ v42
 ### Verbosity ladder
 - Provide `-q`/`--quiet` (suppress non-essential) and a verbose/debug level; hide developer detail
  (stack traces) unless `--verbose`/`--debug`.
-- .NET tooling commonly offers a `--verbosity` scale: `Quiet, Minimal, Normal,
- Detailed, Diagnostic` (define all five even if you use three; map `-v`→Diagnostic, `-q`→Quiet).
+- For `dotnet build`, `-v`/`--verbosity` takes a level: `quiet`, `minimal`, `normal`, `detailed`, or `diagnostic` (for example, `-v diagnostic`). A library sample may configure bare `-v` differently; do not treat that as every .NET tool's contract. Define only the levels your own tool supports.
  Caveat: if `Quiet` + interactive can collide, still show prompts or forbid the combination, or the
  app looks frozen.
 
@@ -49,8 +48,7 @@ eu         Europe                   Common
 us         United States            Common
 $ tool regions | grep Common      # works because layout is line-oriented
 ```
-- **After release, don't break stdout** that scripts depend on: adding fields is OK,
- changing/removing existing output is not. Steer scripts toward `--json`/`--plain` for stability.
+- **Preserve the promised machine-output contract.** Adding fields or columns can break positional parsers, strict schemas and exact snapshots. Document whether unknown fields are allowed; version incompatible changes. Route scripts to stable `--json`/`--plain` formats.
 
 ### Density and paging
 - Increase scannable density (e.g., `ls -l`-style columns) so users pattern-match.
@@ -62,25 +60,25 @@ $ tool regions | grep Common      # works because layout is line-oriented
 
 ## Windows / PowerShell callouts
 
-- PowerShell consumers often prefer structured objects; emitting `--json` makes a CLI first-class for
- `ConvertFrom-Json`. Note `Out-File`/redirection on Windows PowerShell 5.1 defaults to UTF-16 — if
- you tell users to redirect machine output, document encoding (`--json` + `-Encoding utf8`).
+- PowerShell consumers can parse JSON with `ConvertFrom-Json`. For text output under Windows PowerShell 5.1, `tool --json | Out-File -LiteralPath out.json -Encoding utf8` chooses UTF-8 with a BOM instead of the default UTF-16LE. Configure native text decoding correctly first. `>` has no `-Encoding` option; PowerShell 7.4+ direct native-stdout redirection preserves bytes.
 - Column widths: don't assume 80; read `COLUMNS`/console width and degrade gracefully.
 
 ## Edge cases / anti-patterns
 
 - Section-header layouts (blank lines, `===` banners) break `grep` — avoid for data output.
 - Don't label stderr lines like a log file (`ERR`/`WARN`) by default; reserve for verbose.
-- Emoji/symbols: use sparingly to clarify, never as the only signal (see `accessibility-and-i18n.md`).
+- Emoji/symbols: use sparingly to clarify, never as the only signal (see [accessibility-and-i18n.md](accessibility-and-i18n.md)).
 
 ## Do / Don't
 
 - **Do** send data to stdout, status to stderr, and confirm briefly on a TTY.
 - **Do** provide `--json` and keep released output stable.
 - **Don't** print debug/stack traces by default.
-- **Don't** page or animate when stdout isn't a TTY (see `progress-and-feedback.md`).
+- **Don't** page when stdout isn't a TTY; gate animations on the stream they use (see [progress-and-feedback.md](progress-and-feedback.md)).
 
 ## Related
 
-`streams-and-piping.md` · `color-and-styling.md` · `progress-and-feedback.md` ·
-`errors-and-exit-codes.md` · `accessibility-and-i18n.md`
+[streams-and-piping.md](streams-and-piping.md) · [color-and-styling.md](color-and-styling.md) · [progress-and-feedback.md](progress-and-feedback.md) ·
+[errors-and-exit-codes.md](errors-and-exit-codes.md) · [accessibility-and-i18n.md](accessibility-and-i18n.md)
+
+Sources: [dotnet build options](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-build) · [PowerShell encoding](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_character_encoding?view=powershell-5.1).

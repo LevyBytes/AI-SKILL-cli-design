@@ -13,7 +13,7 @@ entry, or making a command scriptable.
  or argument, or scripts can't use the command.
 - **Only prompt when stdin is a TTY.** If stdin isn't interactive, skip the prompt and
  either use the supplied flag or fail with a clear message naming the flag. See
- `interactivity-tty-and-ci.md`.
+ [interactivity-tty-and-ci.md](interactivity-tty-and-ci.md).
 
 ## Decision rules
 
@@ -26,8 +26,7 @@ $ tool keys add ~/.ssh/id_ed25519.pub
 $ tool keys add --key ~/.ssh/id_ed25519.pub --no-input
 ```
 - Prefer prompting for *missing* input over erroring immediately, when interactive.
-- Support `--no-input` (and/or `--yes`/`-y`) to disable all prompts; if required input is then
- missing, fail and say which flag to pass.
+- `--no-input` disables prompts and fails if required input or confirmation is missing. `--yes`/`-y` supplies only the confirmations it explicitly documents; it cannot invent missing values. Define how both options interact.
 
 ### Confirmation strength scales with danger
 - **Mild** (one local file, reversible): often no prompt if the command name is explicit (`delete`);
@@ -47,7 +46,7 @@ $ tool app destroy myapp --confirm myapp
 
 ### Passwords / secrets
 - Don't echo secret input; turn off terminal echo while typing.
-- Don't accept secrets via flags or env vars (they leak); read from a file, a pipe, or a prompt. See `arguments-and-flags.md`, `config-env-and-precedence.md`.
+- Don't accept secrets via flags or env vars (they leak); read from a file, a pipe, or a prompt. See [arguments-and-flags.md](arguments-and-flags.md), [config-env-and-precedence.md](config-env-and-precedence.md).
 
 ## Windows / PowerShell callouts
 
@@ -55,25 +54,25 @@ $ tool app destroy myapp --confirm myapp
  prompting users who didn't ask for it (scripts). If a quiet/`--verbosity Quiet` mode coexists with
  interactive, still show prompts under `--interactive` or forbid the combination, or the app appears
  frozen waiting for input.
-- PowerShell has native prompting (`Read-Host`, `$PSCmdlet.ShouldContinue`/`ShouldProcess` for
- `-Confirm`/`-WhatIf`). For a cross-platform argv CLI, implement your own TTY-gated prompts and map
- `--dry-run`↔`-WhatIf`, `--yes`↔`-Confirm:$false` mentally so behavior matches user expectations.
+- PowerShell advanced functions opt into `SupportsShouldProcess` and call `$PSCmdlet.ShouldProcess()` for `-WhatIf`/`-Confirm`. `ShouldContinue()` is a separate confirmation; `-Confirm:$false` does not automatically bypass it. For argv CLIs, explicitly implement and document dry-run and confirmation behavior rather than assuming these switches are interchangeable.
 
 ## Edge cases / anti-patterns
 
 - **Don't** let a prompt block a pipeline (it will hang in CI) — gate on TTY and offer `--no-input`.
 - **Don't** make a severe action a single `y/N` — too easy to fat-finger; require the name.
 - Ensure the user can abort: Ctrl-C must work even mid-prompt or mid-network (see
- `interactivity-tty-and-ci.md`).
+ [interactivity-tty-and-ci.md](interactivity-tty-and-ci.md)).
 
 ## Do / Don't
 
-- **Do** pair every prompt with a flag/arg and a `--no-input`/`--yes` path.
+- **Do** provide inputs and documented confirmations through flags or files; keep `--no-input` separate from consent.
 - **Do** scale confirmation difficulty to real blast radius.
 - **Don't** echo secrets or read them from flags/env.
 - **Don't** prompt when stdin isn't a TTY.
 
 ## Related
 
-`interactivity-tty-and-ci.md` · `arguments-and-flags.md` · `config-env-and-precedence.md` ·
-`accessibility-and-i18n.md`
+[interactivity-tty-and-ci.md](interactivity-tty-and-ci.md) · [arguments-and-flags.md](arguments-and-flags.md) · [config-env-and-precedence.md](config-env-and-precedence.md) ·
+[accessibility-and-i18n.md](accessibility-and-i18n.md)
+
+Sources: [PowerShell confirmation](https://learn.microsoft.com/en-us/powershell/scripting/learn/deep-dives/everything-about-shouldprocess).

@@ -10,8 +10,7 @@ short vs long options, defaults, required vs optional, parsing libraries, or pas
 
 ## Principles
 
-- **Use an argument-parsing library** rather than hand-rolling. You get help, error
- messages, and suggestions for free.
+- **Use an argument-parsing library** rather than hand-rolling. Configure and test its help, validation, errors, and optional suggestions; these capabilities depend on the library.
 - **Prefer flags to positional arguments.** Flags are explicit, self-documenting, order-
  independent, and easier to evolve without breaking scripts.
  Positional args are fine for one obvious operand or simple multi-file actions.
@@ -63,52 +62,21 @@ $ tool fork --from sourceapp --to destapp
  | `--recursive` | operate on directories recursively |
  | `--all` | include all items |
  | `--dry-run` | describe changes without doing them |
- | `--no-color` / honor `NO_COLOR` | disable color (see `color-and-styling.md`) |
+ | `--no-color` / honor `NO_COLOR` | disable color (see [color-and-styling.md](color-and-styling.md)) |
 
  Pick the standard name when the meaning fits; only coin a new name for genuinely new behavior.
 
-## POSIX-style option syntax (the Unix contract)
-
-- Options are a `-` plus a single alphanumeric; `-W` is reserved for vendors.
-- Options without arguments may be grouped: `-abc` == `-a -b -c`.
-- `--` ends options; everything after is operands even if it starts with `-`.
-- Options should precede operands; option order shouldn't matter unless documented mutually exclusive.
-- **Optional option-arguments:** by convention, option-arguments should *not* be
- optional, yet real tools ship `--color[=when]`. If you must, attach the value (`--color=auto`) and
- document it; do not rely on a following token. For optional-value flags, accept an explicit word
- like `none` rather than a blank (`ssh -F none`).
-- **Support `-`** to mean stdin/stdout in file operands — see
- `streams-and-piping.md`.
-
-## Windows / PowerShell callouts
-
-- .NET CLI does **not** support omitting the delimiter for a single-
- char alias (no `-pVALUE`; use `-p VALUE`), does **not** accept multiple args for one option without
- repeating it, and some boolean options ignore the passed value (`--no-restore false` acts like
- `--no-restore`). Native PowerShell cmdlets use `-Name value` (single dash, PascalCase) — when
- designing a cross-platform CLI, pick POSIX `--long`/`-x` and keep it identical on both OSes rather
- than mixing styles.
-- Windows tools historically used `/flag`; for portable modern CLIs prefer `--long` everywhere and,
- at most, also accept `/flag` on Windows.
-
-## Edge cases
-
-- A flag that can repeat (`-v -v -v` or `-vvv` for verbosity) — define whether repetition stacks.
-- Negatable booleans: offer `--feature`/`--no-feature` for clarity.
-- Globbing is expanded by the shell on Unix but **not** by `cmd.exe`/PowerShell the same way — if you
- accept patterns, document whether the program expands them.
-
 ## Do / Don't
 
-- **Do** make args/flags/subcommands order-independent where possible (users append options on re-run).
-- **Do** validate input early and fail with a clear message (see `errors-and-exit-codes.md`).
+- **Do** accept options in the documented positions; keep operand order and the subcommand hierarchy meaningful. Test global options before and after subcommands if both forms are supported.
+- **Do** validate input early and fail with a clear message (see [errors-and-exit-codes.md](errors-and-exit-codes.md)).
 - **Don't** read secrets from flags — they leak into `ps` output and shell history. Use a
- `--password-file`, stdin, or a secret store. See `config-env-and-precedence.md`.
+ `--password-file`, stdin, or a secret store. See [config-env-and-precedence.md](config-env-and-precedence.md).
 - **Don't** overload `-h`; when help is requested, show help and ignore other flags.
-- **Don't** require a value-flag's argument as a loose following token if it can be confused with an
- operand.
 
 ## Related
 
-`subcommands-and-command-shape.md` · `help-and-usage.md` · `config-env-and-precedence.md` ·
-`streams-and-piping.md` · `errors-and-exit-codes.md`
+[subcommands-and-command-shape.md](subcommands-and-command-shape.md) · [help-and-usage.md](help-and-usage.md) · [config-env-and-precedence.md](config-env-and-precedence.md) ·
+[streams-and-piping.md](streams-and-piping.md) · [errors-and-exit-codes.md](errors-and-exit-codes.md)
+
+For option delimiters, optional values, repeated flags, globbing, and platform parsing differences, read [Option parsing and platforms](option-parsing-and-platforms.md).

@@ -1,50 +1,53 @@
-# Command-Line UX Design
+# Command-Line Interface Design
 
-> _Implementation-ready guidance for designing, reviewing, and testing how a terminal program talks to people and to scripts._
-
-Part of **[Agent Kaizen](https://github.com/DirectorGunner/agent-kaizen)** — Agent Kaizen is designed to support reliable AI agent workflows, context engineering, and AI systems engineering in VS Code, Codex, and Claude Code. Build reusable agent skills, reduce unnecessary context loading, add validation loops, and apply Spec → Verifier → Environment scaffolding to new and existing projects.
-
-This repository is the `cli-design` skill: a reusable, trigger-rich task handbook that an AI coding agent (OpenAI Codex, Claude Code) loads on demand when a task matches its triggers.
-
-## What this skill covers
-
-This skill covers the full surface of command-line user experience: command and subcommand naming, positional arguments, flags, options, and defaults; prompts, confirmations, and destructive-action safety; help and usage text, error messages, and exit codes; stdout vs stderr, piping, and structured/JSON output; color and styling (`NO_COLOR`, Windows VT), progress indicators and spinners, and quiet/verbose/debug/json modes. It also covers TTY detection, interactive vs non-interactive/CI behavior, config and environment precedence, shell-completion UX, accessibility, and i18n. It fires when you build or review an argument parser (argparse, click, typer, cobra, clap, commander, oclif) or a setup/install script's prompts — even when no one says "CLI design" by name. Guidance gives equal weight to Unix/POSIX and Windows/PowerShell conventions and flags where they diverge, with worked examples and a review checklist.
-
-## What's inside
-
-- `SKILL.md` — frontmatter (`name` + trigger-rich `description`) and a lean body.
-- `references/` — right-sized topic files the agent loads only when relevant (plus `INDEX.md` and `topics.json`).
-- `GOTCHA.md` — known pitfalls and edge cases.
-
-## Use it
-
-This skill is one git repo inside the Agent Kaizen **skills store**. The store nests two folders on purpose: the outer **`SKILLS\`** is a VS Code project for building and maintaining skills (its own workspace + tooling), and the inner lowercase **`skills\`** holds every skill as its own repo. That split lets a project pull skills two ways — the **whole `skills\` folder at once** (loads everything — **not recommended**) or **one skill at a time** (recommended: load only what a task needs and stay under Claude Code's skill-listing budget).
-
-Paths below use **`%DEVROOT%`** — the `DEVROOT` environment variable pointing at the folder that contains `SKILLS\`. Set it once by running **`SetDevRoot.cmd`** in the SKILLS repo root (no admin); a new shell then resolves `%DEVROOT%` automatically.
-
-Link **just this skill** (recommended) — a Windows directory junction, no admin:
-
-```cmd
-mklink /J .agents\skills\cli-design  "%DEVROOT%\SKILLS\skills\cli-design"
-mklink /J .claude\skills\cli-design  "%DEVROOT%\SKILLS\skills\cli-design"
+```mermaid
+---
+config:
+  flowchart:
+    wrappingWidth: 400
+---
+flowchart LR
+    brand["KAIZEN<br/>SKILL LIBRARY"]:::brand
+    skill("Command-Line Interface Design"):::skill
+    first(["Command Design"]):::topic
+    second(["User Experience"]):::topic
+    third(["Automation Reliability"]):::accent
+    brand --- skill
+    skill --- first
+    skill --- second
+    skill --- third
+    classDef brand fill:#0f172a,color:#67e8f9,stroke:#22d3ee,stroke-width:2px,font-family:monospace
+    classDef skill fill:#172554,color:#eff6ff,stroke:#60a5fa,stroke-width:2px,font-size:20px
+    classDef topic fill:#0c4a6e,color:#bae6fd,stroke:#38bdf8,stroke-width:1px
+    classDef accent fill:#1e293b,color:#fcd34d,stroke:#f59e0b,stroke-width:1px
+    linkStyle default stroke:#38bdf8,stroke-width:1px
 ```
 
-Or link the **whole store** at once (loads every skill — not recommended outside a skills-dev project):
+Practical design guidance for command-line tools used by people, scripts and CI jobs. The references connect command structure and help text with output contracts, errors, prompts and terminal behavior, making the package useful during both implementation and review.
 
-```cmd
-mklink /J .agents\skills  "%DEVROOT%\SKILLS\skills"
-mklink /J .claude\skills  "%DEVROOT%\SKILLS\skills"
-```
+Use when designing, building, reviewing, or testing CLI commands, argument parsers, help, output, errors, prompts, configuration, shell completion, accessibility, or behavior in terminals, pipelines, and CI, including installer prompts on Unix and Windows/PowerShell.
 
-Remove a link (the store copy is untouched):
+## What this skill helps with
 
-```cmd
-rmdir .agents\skills\cli-design
-rmdir .claude\skills\cli-design
-```
+| Task | Useful reference material |
+| --- | --- |
+| [Shape commands and options](references/arguments-and-flags.md) | Choose clear flags, operands and defaults, then follow the parsing and subcommand references. |
+| [Make output usable in pipelines](references/streams-and-piping.md) | Separate stdout and stderr, handle stdin and account for broken pipes. |
+| [Support terminals and automation](references/interactivity-tty-and-ci.md) | Design predictable behavior for TTYs, redirected streams and unattended execution. |
+| [Review and test the interface](references/cli-design-review.md) | Evaluate an existing CLI with a structured checklist and linked UX testing guidance. |
 
-The agent (OpenAI Codex, Claude Code) then auto-loads this skill whenever a task matches its triggers. Built and validated with **[skill-drafting](https://github.com/DirectorGunner/AI-skill-drafting)** to the Agent Kaizen gold standard.
+## The work behind the references
 
-## License
+The material is organized by interface decision rather than by a particular parser library. Focused references retain the Unix/POSIX and Windows/PowerShell distinctions, with examples for stream handling, output formats and error behavior.
 
-Licensed under **AGPL-3.0**, matching the [Agent Kaizen](https://github.com/DirectorGunner/agent-kaizen) project.
+## Start here
+
+Start with [SKILL.md](SKILL.md) and follow its context routes.
+
+Use the [reference index](references/INDEX.md) to select a design concern. The [language selector](references/languages.md) includes a Spanish streams-and-piping translation and identifies the English fallback for topics without a bundled translation.
+
+## Sources and license
+
+Skill reference documentation is interpreted content for use in open source projects. Check against [official documentation sources](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces) when dealing with defects or issues that may come up from interpreting this skill's references.
+
+Licensed under **AGPL-3.0**; see [LICENSE](LICENSE). Part of the [Agent Kaizen](https://github.com/LevyBytes/agent-kaizen) skill library.

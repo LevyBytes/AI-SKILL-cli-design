@@ -37,15 +37,14 @@ Document the resolved order so users can predict behavior.
 - Names: UPPERCASE letters, digits, underscores, not starting with a digit; keep
  values single-line. Booleans: accept presence-as-true or
  `1/true/enabled` vs `0/false/disabled`.
-- Honor standard general-purpose vars where relevant: `NO_COLOR`/`FORCE_COLOR`, `DEBUG`, `EDITOR`,
+- Honor relevant existing conventions and the libraries that implement them: `NO_COLOR`/`FORCE_COLOR`, `DEBUG`, `EDITOR`,
  `HTTP_PROXY`/`HTTPS_PROXY`/`NO_PROXY`, `PAGER`, `TERM`, `TMPDIR`, `HOME`, `LINES`/`COLUMNS`. Don't commandeer widely-used names.
 - Support reading a project `.env` for values that don't change within a directory — but **don't treat
  `.env` as your real config format** (no history, string-only, easy to leak).
 
 ## Config files
 
-- **Use standard locations** — follow the XDG Base Directory spec (`~/.config/tool/`) to
- avoid dotfile sprawl.
+- **Use standard locations** — on XDG platforms use an absolute `$XDG_CONFIG_HOME/tool/`; if unset or empty, default to `$HOME/.config/tool/`. Ignore relative XDG paths. Distinguish config from cache, data and state.
 - Formats: TOML/JSON/YAML or simple line-based; pick human-readable and diffable. Code-as-config
  (JS/Lua/HCL/Jsonnet) is powerful but needs heavy docs, error handling, and versioning — only for
  very stable APIs.
@@ -56,7 +55,7 @@ Document the resolved order so users can predict behavior.
 
 - **Never read secrets from environment variables or flags** — they leak via exported
  vars, `ps`, shell history, `docker inspect`, `systemctl show`. Use credential files,
- pipes, sockets, or a secret manager. See `arguments-and-flags.md`, `prompts-and-confirmation.md`.
+ pipes, sockets, or a secret manager. See [arguments-and-flags.md](arguments-and-flags.md), [prompts-and-confirmation.md](prompts-and-confirmation.md).
 
 ## Windows / PowerShell callouts
 
@@ -65,15 +64,14 @@ Document the resolved order so users can predict behavior.
  as UPPERCASE for portability. In PowerShell, env vars are `$env:NAME`, set per-process; persisting
  to User/Machine scope uses `[Environment]::SetEnvironmentVariable` — document this if your tool
  tells users to set variables.
-- `.env` loading and proxy variables behave the same cross-platform; keep one precedence chain on all
- OSes.
+- `.env` loading is application/library behavior, not automatic shell behavior. Proxy-variable spelling is also library-specific: libcurl accepts lowercase `http_proxy`, while Windows environment lookup is case-insensitive. Document and test the chosen precedence on each platform.
 
 ## Edge cases / anti-patterns
 
 - **Don't** invent a precedence that contradicts the documented order, or leave it undocumented.
 - **Don't** silently overwrite a user's existing config; back up or append-with-marker.
 - Optional-value flags interacting with env defaults: define what an explicit `--flag` with no value
- means vs the env default (see `arguments-and-flags.md`).
+ means vs the env default (see [option-parsing-and-platforms.md](option-parsing-and-platforms.md)).
 
 ## Do / Don't
 
@@ -84,5 +82,7 @@ Document the resolved order so users can predict behavior.
 
 ## Related
 
-`arguments-and-flags.md` · `prompts-and-confirmation.md` · `color-and-styling.md` ·
-`interactivity-tty-and-ci.md`
+[arguments-and-flags.md](arguments-and-flags.md) · [prompts-and-confirmation.md](prompts-and-confirmation.md) · [color-and-styling.md](color-and-styling.md) ·
+[interactivity-tty-and-ci.md](interactivity-tty-and-ci.md)
+
+Sources: [XDG directories](https://specifications.freedesktop.org/basedir-spec/latest/) · [libcurl environment variables](https://curl.se/libcurl/c/libcurl-env.html).

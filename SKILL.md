@@ -1,101 +1,39 @@
 ---
 name: cli-design
-description: >-
-  Use when designing, building, reviewing, testing, or improving how a terminal program interacts
-  with people - command and subcommand naming, arguments, flags, defaults, prompts and confirmations,
-  help and usage text, error messages and exit codes, stdout vs stderr, piping and structured/JSON
-  output, color and styling, progress indicators and spinners, quiet/verbose/debug/json modes, TTY
-  detection, interactive vs non-interactive/CI behavior, config and environment precedence,
-  shell-completion UX, accessibility, and i18n. Also fires when building or reviewing an argument
-  parser (argparse, click, typer, cobra, clap, commander, oclif) or a setup/install script's prompts,
-  even when the user never says "CLI design" by name. Gives Unix- and Windows/PowerShell-aware
-  guidance with worked examples and a review checklist.
-covers:
-  - stdout
-  - stderr
-  - secrets
-  - --no-input
-  - no-color
-  - tty
-  - arguments
-  - flags
-  - options
-  - positional
-  - getopt
-  - posix
+description: "Use when designing, building, reviewing, or testing CLI commands, argument parsers, help, output, errors, prompts, configuration, shell completion, accessibility, or behavior in terminals, pipelines, and CI, including installer prompts on Unix and Windows/PowerShell."
+metadata:
+  last-updated: "2026-10-09"
 ---
 
-# Command-Line UX Design
+# Context Router
 
-Implementation-ready guidance for designing and reviewing terminal user
-experiences in scripts and CLIs. Where established practices disagree, the disagreement is
-reconciled, not averaged away. Guidance gives **equal weight to Unix/POSIX and
-Windows/PowerShell** conventions and flags where they diverge.
+Choose the reference for the command-line design or review task. Preserve the documented Unix/POSIX and Windows/PowerShell distinctions.
 
-## When to use this skill
+| Topic | Open when | Read |
+| --- | --- | --- |
+| Arguments and Flags | Open when designing or reviewing CLI operands, flag names, defaults, required options, or safe secret input. | [Arguments and Flags](references/arguments-and-flags.md) |
+| Option Parsing and Platforms | Open when implementing option parsing, optional values, repeated flags, globbing, or Unix and Windows/PowerShell parsing differences. | [Option Parsing and Platforms](references/option-parsing-and-platforms.md) |
+| Subcommands and Command Shape | Open when organizing CLI subcommands, choosing command names or word order, or reviewing command consistency. | [Subcommands and Command Shape](references/subcommands-and-command-shape.md) |
+| Prompts and Confirmation | Open when adding interactive prompts, confirmation for destructive actions, or ways to run without prompting. | [Prompts and Confirmation](references/prompts-and-confirmation.md) |
+| Help and Usage Text | Open when writing CLI help, usage syntax, or examples, or deciding help output streams and exit status. | [Help and Usage Text](references/help-and-usage.md) |
+| Discovery, Completion, and CLI Documentation | Open when designing command discovery, typo suggestions, shell completion, man pages, or links to CLI documentation. | [Discovery, Completion, and CLI Documentation](references/discovery-completion-and-docs.md) |
+| Output and Formatting | Open when choosing CLI output formats, JSON or plain-text modes, tables, paging, verbosity, or success messages. | [Output and Formatting](references/output-and-formatting.md) |
+| Color and Styling | Open when adding CLI color or styling, honoring NO_COLOR and TTY detection, or supporting terminal themes and Windows VT. | [Color and Styling](references/color-and-styling.md) |
+| Errors and Exit Codes | Open when writing actionable CLI errors, assigning exit codes, or handling reserved and platform-specific exit statuses. | [Errors and Exit Codes](references/errors-and-exit-codes.md) |
+| Streams and Piping | Open when separating stdout and stderr, accepting stdin, using '-' for streams, or handling pipelines and broken pipes. | [Streams and Piping](references/streams-and-piping.md) |
+| Progress and Feedback | Open when adding progress bars, spinners, status feedback, or failure logs for long-running CLI operations. | [Progress and Feedback](references/progress-and-feedback.md) |
+| Interactivity, TTY, and CI | Open when adapting a CLI to terminals, redirected streams, unattended runs, or CI, including TTY detection, --no-input, and signals. | [Interactivity, TTY, and CI](references/interactivity-tty-and-ci.md) |
+| Configuration, Environment, and Precedence | Open when choosing CLI configuration sources, resolving flag/environment/file precedence, locating config files, or protecting secrets. | [Configuration, Environment, and Precedence](references/config-env-and-precedence.md) |
+| Accessibility and Internationalization | Open when making CLI output accessible to screen readers, usable without color, or safe across locales and display widths. | [Accessibility and Internationalization](references/accessibility-and-i18n.md) |
+| Testing CLI UX | Open when testing CLI exit codes, stdout, stderr, JSON output, or behavior in terminals, pipelines, and CI. | [Testing CLI UX](references/testing-cli-ux.md) |
+| CLI Design Review Checklist | Open when reviewing an existing CLI against a design checklist and reporting findings by severity. | [CLI Design Review Checklist](references/cli-design-review.md) |
 
-Reach for this skill whenever a task touches how a command-line program talks to a human or a
-script: argument/flag/subcommand design, help and usage text, error messages and exit codes,
-stdout/stderr and piping, color, prompts and confirmations, progress, verbosity/quiet/JSON modes,
-TTY and CI behavior, configuration precedence, accessibility, or general command-line ergonomics —
-including when you are wiring up a parser (argparse/click/typer/cobra/clap/commander/oclif) or a
-setup script's prompts.
+Open the [reference index](references/INDEX.md) or [topic catalog](references/topics.json) for broader topic lookup.
 
-## How to use it (runtime workflow)
+# Language Translations
 
-1. Read this file, then open `references/INDEX.md`.
-2. Use the **task router** below (or `references/topics.json`) to load only the component(s) relevant
-   to the concern at hand — do not read everything.
-3. Apply the component's principles, decision rules, and do/don't guidance.
-4. When established practices conflict, each component states the reconciliation inline; follow it.
-5. For a critique or audit of an existing CLI, run `references/cli-design-review.md` as a checklist
-   and report findings with severity.
-6. If a needed point is not covered by the digested sources, say so and mark it `TODO` — never invent
-   a convention.
+[Reference Language Selection](references/languages.md)
 
-## Task router
+# Context For Open Source
 
-| If the task is about… | Read |
-| --- | --- |
-| positional args, flags, options, defaults, secrets on the command line | `references/arguments-and-flags.md` |
-| command/subcommand structure, naming, verb-noun vs noun-verb | `references/subcommands-and-command-shape.md` |
-| prompting, confirmations, destructive-action safety | `references/prompts-and-confirmation.md` |
-| `-h`/`--help`, usage synopsis, man pages, "did you mean" | `references/help-and-usage.md` |
-| what/where to print, success output, tables, `--json`, paging | `references/output-and-formatting.md` |
-| ANSI color, `NO_COLOR`, themes, Windows VT | `references/color-and-styling.md` |
-| error messages, exit codes, `sysexits.h` | `references/errors-and-exit-codes.md` |
-| stdout vs stderr, pipes, `-` for stdin/stdout | `references/streams-and-piping.md` |
-| spinners, progress bars, responsiveness | `references/progress-and-feedback.md` |
-| TTY detection, `--no-input`, CI/non-interactive behavior, signals | `references/interactivity-tty-and-ci.md` |
-| flags vs env vars vs config files, precedence, XDG | `references/config-env-and-precedence.md` |
-| screen readers, colorblindness, locale, plain output | `references/accessibility-and-i18n.md` |
-| testing CLI behavior and UX | `references/testing-cli-ux.md` |
-| authoring/discovery of this skill for Codex & Claude | `references/skill-format-and-discovery.md` |
-| auditing an existing CLI | `references/cli-design-review.md` |
-
-## Gotchas
-
-Recurring failure modes and what to do instead live in the sibling [GOTCHA.md](GOTCHA.md).
-
-## Verification notes
-
-Validate the package structure (the validator ships with the skill-drafting skill; paths use the `DEVROOT` env var — adjust to your layout):
-
-```powershell
-python "$env:DEVROOT\SKILLS\skills\skill-drafting\scripts\validate_skill_package.py" "$env:DEVROOT\SKILLS\skills\cli-design"
-```
-
-This package is built and checked with the three-layer method (Spec -> Verifier -> Environment;
-see `references/cli-design-review.md`). Ground-truth checks live in `AI/work/verify_cli_design.py`:
-every component is listed in `references/INDEX.md`, has exactly one `topics.json` entry, resolves
-its cross-links, and contains a summary, a
-"When this applies" line, at least one example, and a do/don't or anti-patterns section. Keep those
-invariants when editing.
-
-## Reference map
-
-Start at `references/INDEX.md`. Metadata: `references/topics.json` (topic -> file + keywords).
-
-## Inspired by
-
-Includes original content written for this skill, informed by: GNU Coding Standards, POSIX utility conventions, Microsoft .NET command-line guidance, and the Agent Skills (Claude/Codex) skill format.
+Skill reference documentation is interpreted content for use in open source projects. Check against [official documentation sources](https://www.gnu.org/prep/standards/html_node/Command_002dLine-Interfaces) when dealing with defects or issues that may come up from interpreting this skill's references.

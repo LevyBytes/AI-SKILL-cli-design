@@ -11,7 +11,7 @@ locale-sensitive formatting.
 
 - **Meaning must survive without color or styling.** Pair every color/symbol cue with a
  text label so colorblind users and screen readers get the same signal. See
- `color-and-styling.md`.
+ [color-and-styling.md](color-and-styling.md).
 - **Plain, structured output is accessible output.** Prefer clean labeled
  lines with headings/bullets/separators over heavy ASCII tables, long walls of text, or animations
  that screen readers can't follow.
@@ -29,16 +29,15 @@ DOWN  otherapp
 
 ### Write descriptive content
 - Avoid vague text ("it failed"); say what failed and the next step. See
- `errors-and-exit-codes.md`.
+ [errors-and-exit-codes.md](errors-and-exit-codes.md).
 - Give prompts and feedback descriptive labels; don't assume the user infers from context or visual
- scanning. See `prompts-and-confirmation.md`.
+ scanning. See [prompts-and-confirmation.md](prompts-and-confirmation.md).
 
 ### Keep output screen-reader friendly
 - Favor plain text with clear separators over dense box-drawing tables and overly styled ASCII art;
  offer a `--plain`/`--json` mode for assistive tooling and scripts. See
- `output-and-formatting.md`.
-- Don't emit animations/spinners that thrash a screen reader; they're TTY-only anyway and should be
- suppressed in non-interactive contexts. See `progress-and-feedback.md`.
+ [output-and-formatting.md](output-and-formatting.md).
+- Offer an explicit plain/no-animation mode even on a TTY; screen readers may use a terminal too. Suppress animations in non-interactive contexts. See [progress-and-feedback.md](progress-and-feedback.md).
 - A short, accessible success line:
 ```
 OK Deployment successful.
@@ -48,11 +47,10 @@ Run `tool status` to check environment health.
 ### Keyboard and non-interactive safety
 - Ensure flows are keyboard-accessible and scriptable; include a `--non-interactive`/`--no-input`
  path so nothing depends on visual, mouse, or timing cues. See
- `interactivity-tty-and-ci.md`.
+ [interactivity-tty-and-ci.md](interactivity-tty-and-ci.md).
 
 ### Internationalization
-- Don't hardcode assumptions about width or encoding: terminals are UTF-8 capable but width varies;
- read `COLUMNS` and degrade. Be careful with emoji and wide/CJK glyphs in aligned tables (they break
+- Don't assume a terminal uses UTF-8 or that every glyph occupies one cell. Negotiate/document encoding, check width (including `COLUMNS` where supported), and degrade gracefully. Be careful with emoji and wide/CJK glyphs in aligned tables (they break
  column math). Respect locale where you format numbers/dates, and keep machine output
  (`--json`) locale-independent so scripts are stable.
  *(Consensus on plain/parseable output across sources; specific locale mechanics are a reasoned
@@ -60,13 +58,13 @@ Run `tool status` to check environment health.
 
 ### Testing
 - Test with a screen reader and a colorblindness simulator to catch
- contrast, clarity, and verbosity problems. See `testing-cli-ux.md`.
+ contrast, clarity, and verbosity problems. See [testing-cli-ux.md](testing-cli-ux.md).
 
 ## Windows / PowerShell callouts
 
 - Screen readers exist on all platforms (NVDA/JAWS/Narrator on Windows, VoiceOver on macOS, Orca on
  Linux); plain labeled text helps all of them. `NO_COLOR` is honored cross-platform — respect it.
- On legacy Windows consoles, ANSI may not render (see `color-and-styling.md`), so never make ANSI the
+ On legacy Windows consoles, ANSI may not render (see [color-and-styling.md](color-and-styling.md)), so never make ANSI the
  only way meaning is conveyed.
 
 ## Edge cases / anti-patterns
@@ -84,5 +82,7 @@ Run `tool status` to check environment health.
 
 ## Related
 
-`color-and-styling.md` · `output-and-formatting.md` · `errors-and-exit-codes.md` ·
-`prompts-and-confirmation.md` · `interactivity-tty-and-ci.md` · `testing-cli-ux.md`
+[color-and-styling.md](color-and-styling.md) · [output-and-formatting.md](output-and-formatting.md) · [errors-and-exit-codes.md](errors-and-exit-codes.md) ·
+[prompts-and-confirmation.md](prompts-and-confirmation.md) · [interactivity-tty-and-ci.md](interactivity-tty-and-ci.md) · [testing-cli-ux.md](testing-cli-ux.md)
+
+Sources: [Unicode character width](https://www.unicode.org/reports/tr11/).

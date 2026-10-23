@@ -27,7 +27,7 @@ Try: chmod +w config.toml
 - Error/warning text → **stderr**. Failure exits non-zero; a warning during a successful operation need not. See [streams-and-piping.md](streams-and-piping.md).
 - A usage error may print short help to stderr (see [help-and-usage.md](help-and-usage.md)).
 
-## Exit codes — layered, all-encompassing model
+## Exit codes - layered, all-encompassing model
 
 Apply the layers in order; adopt only as much granularity as the tool needs, and **document whatever
 set you choose**.
@@ -40,13 +40,13 @@ set you choose**.
  - `2` usage/misuse (bad flags or arguments) — common convention
  Provide rich stderr messages alongside; this keeps simple tools simple while
  staying script-friendly.
-3. **Respect reserved codes** (don't reuse them for your own meanings) — shell/Unix convention:
+3. **Respect reserved codes** (don't reuse them for your own meanings) - shell/Unix convention:
  - `126` command found but not executable; `127` command not found;
  - `128+N` terminated by signal N (e.g., `130` = Ctrl-C/SIGINT); avoid codes above 255.
 4. **Optional richer codes** when a tool benefits: map specific, stable codes to distinct failure classes a caller will branch on. A common
  ready-made scheme is BSD `sysexits.h` (`64` usage, `65` data err, `66` no input, `69` unavailable,
  `70` software, `73` can't create, `77` no permission, `78` config). Use it only if callers need to
- distinguish causes — and keep codes stable forever once published.
+ distinguish causes: and keep codes stable forever once published.
 
 ```sh
 if tool deploy; then
@@ -64,12 +64,12 @@ This shell wrapper preserves the failing command's status instead of returning t
  do callers actually branch on the cause? If not, stay at layer 2.
 - **Partial failure:** decide and document — non-zero if any item failed (fail-closed) is the common,
  safe default; offer `--keep-going` style behavior explicitly if you continue past errors.
-- HTTP/proxy-style tools legitimately map richer codes — that's the layer-4 case.
+- HTTP/proxy-style tools legitimately map richer codes: that's the layer-4 case.
 
 ## Windows / PowerShell callouts
 
 - PowerShell exposes a native command's exit code as `$LASTEXITCODE`, while `$?` is a
- separate boolean — design so the integer code is meaningful, since scripts check `$LASTEXITCODE`.
+ separate boolean: design so the integer code is meaningful, since scripts check `$LASTEXITCODE`.
  Note: PowerShell 5.1 can set `$?` to `$false` on stderr output even when exit code is 0; keep exit
  code authoritative and don't rely on stderr-as-failure.
 - The `128+N` signal convention is Unix; on Windows, Ctrl-C handling differs — still return non-zero

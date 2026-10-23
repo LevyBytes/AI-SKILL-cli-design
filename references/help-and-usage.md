@@ -68,7 +68,7 @@ FLAGS
 
 ## Edge cases / anti-patterns
 
-- **Don't page help by default** — users may not know how to scroll/search/quit; let them pipe to a
+- **Don't page help by default**: users may not know how to scroll/search/quit; let them pipe to a
  pager themselves. See [output-and-formatting.md](output-and-formatting.md) for when paging *is* appropriate.
 - If the tool expects piped stdin but stdin is a TTY, show help or exit instead of hanging silently. See [interactivity-tty-and-ci.md](interactivity-tty-and-ci.md).
 

@@ -23,7 +23,7 @@ $ tool deploy
 $ tool deploy --no-input --yes
 ```
 - If interactive input is needed but unavailable (non-TTY and no flag), **fail fast** with a message
- naming the flag — don't hang. See [prompts-and-confirmation.md](prompts-and-confirmation.md).
+ naming the flag: don't hang. See [prompts-and-confirmation.md](prompts-and-confirmation.md).
 - If the tool reads piped stdin but stdin is a TTY (nothing piped), show help or exit rather than
  blocking. See [help-and-usage.md](help-and-usage.md).
 

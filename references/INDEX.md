@@ -1,4 +1,4 @@
-# CLI Design References — Index
+# CLI Design References - Index
 
 Start here. Each component is a self-contained, original guide. Load only what the task
 needs (progressive disclosure). Metadata: [topics.json](topics.json) (topic → file + keywords). Guidance gives

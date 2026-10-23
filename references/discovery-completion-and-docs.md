@@ -6,7 +6,7 @@ Help users discover commands through suggestions, completion, and linked documen
 
 ### Discovery aids
 - **Suggest corrections** on typos/unknown commands ("Did you mean…"), and point to the
- command list — but suggest, don't auto-run, especially for state-changing actions:
+ command list: but suggest, don't auto-run, especially for state-changing actions:
 ```
 $ tool buld
 Error: unknown command "buld".

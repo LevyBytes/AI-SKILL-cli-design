@@ -15,7 +15,7 @@ success output is **context-dependent**: a brief confirmation on a TTY, quiet/da
 
 ## Decision rules
 
-### Success output — recommended: context-dependent
+### Success output - recommended: context-dependent
 - **On a TTY:** print a brief confirmation that says what changed, especially when the effect isn't
  obvious: `Enabling maintenance mode for myapp... done`.
 - **When piped / not a TTY:** stay quiet or emit only the data; follow the Unix rule of silence so

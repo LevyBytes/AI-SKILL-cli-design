@@ -16,7 +16,7 @@ resolving conflicts between settings.
 - **Treat config as untrusted input:** validate paths/URLs, don't assume numeric formats
  (`1_000`, `1e3`), fail safely.
 
-## Precedence (highest wins) — recommended order
+## Precedence (highest wins) - recommended order
 
 Recommended chain:
 
@@ -44,7 +44,7 @@ Document the resolved order so users can predict behavior.
 
 ## Config files
 
-- **Use standard locations** — on XDG platforms use an absolute `$XDG_CONFIG_HOME/tool/`; if unset or empty, default to `$HOME/.config/tool/`. Ignore relative XDG paths. Distinguish config from cache, data and state.
+- **Use standard locations**: on XDG platforms use an absolute `$XDG_CONFIG_HOME/tool/`; if unset or empty, default to `$HOME/.config/tool/`. Ignore relative XDG paths. Distinguish config from cache, data and state.
 - Formats: TOML/JSON/YAML or simple line-based; pick human-readable and diffable. Code-as-config
  (JS/Lua/HCL/Jsonnet) is powerful but needs heavy docs, error handling, and versioning — only for
  very stable APIs.
@@ -53,7 +53,7 @@ Document the resolved order so users can predict behavior.
 
 ## Secrets
 
-- **Never read secrets from environment variables or flags** — they leak via exported
+- **Never read secrets from environment variables or flags**: they leak via exported
  vars, `ps`, shell history, `docker inspect`, `systemctl show`. Use credential files,
  pipes, sockets, or a secret manager. See [arguments-and-flags.md](arguments-and-flags.md), [prompts-and-confirmation.md](prompts-and-confirmation.md).
 

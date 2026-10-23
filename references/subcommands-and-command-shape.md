@@ -16,7 +16,7 @@ naming, word order, aliases, or whether to add subcommands at all.
 
 ## Decision rules
 
-### Word order — recommended default: noun-verb / area-grouping
+### Word order - recommended default: noun-verb / area-grouping
 - **Recommended:** group by the object (noun/area), then the action (verb):
  `tool <area> <verb>` e.g. `docker container create`, `git remote add`, `dotnet tool install`. This organizes help, scales as the tool grows, and is illustrated by these established multi-command CLIs; it is a design recommendation, not a universal standard.
 - **Alternative — verb-noun:** `tool create project` reads like natural
@@ -52,9 +52,9 @@ $ tool db backup myapp
 
 ## Edge cases / anti-patterns
 
-- **Don't add a catch-all subcommand** (assume `run` when the first arg is unrecognized) — you can
+- **Don't add a catch-all subcommand** (assume `run` when the first arg is unrecognized): you can
  never later add a command with that name without breaking scripts.
-- **Don't allow arbitrary prefix abbreviation** (`tool ins` → `install`) — it traps you from adding
+- **Don't allow arbitrary prefix abbreviation** (`tool ins` → `install`): it traps you from adding
  any command starting with those letters. Use explicit, stable aliases instead.
 - Deep nesting (4+ levels) hurts discoverability; flatten or group.
 

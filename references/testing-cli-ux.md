@@ -56,7 +56,7 @@ Also run the color case under a pseudo-terminal and check for color escape seque
 - Test the **non-interactive** surface in CI (it's deterministic); reserve manual/recorded checks for
  interactive prompts and animations.
 - Snapshot machine output (`--json`, `--plain`); assert on *fields*, not exact human-formatted lines
- (which are allowed to change — see [output-and-formatting.md](output-and-formatting.md)).
+ (which are allowed to change: see [output-and-formatting.md](output-and-formatting.md)).
 - Include an accessibility pass: `NO_COLOR` output still conveys state; a screen-reader/colorblind
  spot check for human output. See [accessibility-and-i18n.md](accessibility-and-i18n.md).
 
